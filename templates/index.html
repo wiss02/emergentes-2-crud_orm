@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="glass-panel">
+    <div class="d-flex justify-between align-center mb-4">
+        <h2>Listado de Productos</h2>
+        <a href="{{ url_for('create') }}" class="btn btn-primary">Nuevo Producto</a>
+    </div>
+    
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>{{ product.name }}</td>
+                    <td>${{ "%.2f"|format(product.price) }}</td>
+                    <td>{{ product.stock }}</td>
+                    <td class="actions">
+                        <a href="{{ url_for('view', id=product.id) }}" class="btn btn-sm btn-outline">Ver</a>
+                        <a href="{{ url_for('edit', id=product.id) }}" class="btn btn-sm btn-primary">Editar</a>
+                        <form action="{{ url_for('delete', id=product.id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este producto?');">
+                            <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5" class="text-center">No hay productos registrados.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
